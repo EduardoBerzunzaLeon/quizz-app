@@ -4,7 +4,7 @@ interface Answer {
     isCorrect: boolean
 }
 
-interface Question {
+export interface Question {
     question: string,
     answers: Answer[]
 }

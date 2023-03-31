@@ -1,33 +1,66 @@
 import { Button, Stack, Typography } from '@mui/material';
 import { FC, MouseEvent, useEffect, useRef, useState } from 'react';
-import { fakeQuestions } from '../assets/questions';
+import { fakeQuestions, Question as QuestionType } from '../assets/questions';
 
 
 interface Props {
   current: number,
-  onNext: React.Dispatch<React.SetStateAction<number>>
+  onNext: React.Dispatch<React.SetStateAction<number>>,
+  onScore: React.Dispatch<React.SetStateAction<number>>,
+  onFinished: React.Dispatch<React.SetStateAction<boolean>>,
+  onQuestions: React.Dispatch<React.SetStateAction<QuestionType[] | []>>,
 }
 
-const Question: FC<Props> = ({ current, onNext }) => {
+const getQuestions= () => {
+  console.log('call questions method');
+  return fakeQuestions;
+};
 
-  const [isTheLast, setIsTheLast] = useState((current + 1) === fakeQuestions.length);
+const Question: FC<Props> = ({ current, onNext, onScore, onFinished, onQuestions }) => {
+
+  const [isTheLast, setIsTheLast] = useState<boolean>(false);
+  const [textClicked, setTextClicked] = useState<string>('');
+  const [isDisabled, setIsDisabled] = useState<boolean>(false);
+
+  useEffect(() => {
+    onQuestions(getQuestions());
+  }, []);
 
   useEffect(() => {
     setIsTheLast((current + 1) === fakeQuestions.length);
-  }, [current, fakeQuestions])
+  }, [current, fakeQuestions]);
+
   
-  const handleClick = (e: MouseEvent<HTMLButtonElement>, isCorrect: boolean) => {
-    e.currentTarget.setAttribute('color', 'error')
+  const getColor = ( isCorrect: boolean, text: string, answerText: string ) => {
 
-    console.log(e);
+    if(text === '') return;
 
-    // e.target.setAttribute('color', 'error');
+    if(isCorrect) return 'success';
+
+    if(text === answerText ) return 'error';
+
+    return;
 
   }
 
+  const handleClick = (isCorrect: boolean, text: string) => {
+    setIsDisabled(true);
+
+    if(isDisabled) return;
+     
+    setTextClicked(text);
+    
+    if(isCorrect) onScore(score => score + 1);
+  }
+
   const handleNext = () => {
-    if(isTheLast) return;
-    return onNext(c => c + 1);
+
+    setTextClicked('');
+    setIsDisabled(false);
+
+    if(!isTheLast) return onNext(c => c + 1);
+
+    onFinished(true);
   }
 
   return (
@@ -42,7 +75,8 @@ const Question: FC<Props> = ({ current, onNext }) => {
             size="medium" 
             variant="outlined" 
             sx={{ borderRadius: '12px' }} 
-            onClick={(e) => handleClick(e, isCorrect)}
+            onClick={() => handleClick(isCorrect, text)}
+            color={getColor(isCorrect, textClicked, text)}
           >{ text }</Button>
         ))
       }
