@@ -24,6 +24,7 @@ const GameOverButtons: FC<Props> = ({ score, questions, onCurrent, onFinished, o
 
   const onView = () => {
     // TODO: Implement view method
+    console.log('onview');
   }
 
   return (
