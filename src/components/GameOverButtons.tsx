@@ -7,14 +7,13 @@ import { Question } from "../assets/questions";
 
 interface Props {
   score: number,
-  questions: Question[],
   onScore: React.Dispatch<React.SetStateAction<number>>,
   onFinished: React.Dispatch<React.SetStateAction<boolean>>,
   onCurrent: React.Dispatch<React.SetStateAction<number>>,
+  onViewAnswers: React.Dispatch<React.SetStateAction<boolean>>,
 }
 
-const GameOverButtons: FC<Props> = ({ score, questions, onCurrent, onFinished, onScore }) => {
-
+const GameOverButtons: FC<Props> = ({ score, onCurrent, onFinished, onScore, onViewAnswers }) => {
 
   const onReset = () => {
     onCurrent(0);
@@ -23,8 +22,7 @@ const GameOverButtons: FC<Props> = ({ score, questions, onCurrent, onFinished, o
   }
 
   const onView = () => {
-    // TODO: Implement view method
-    console.log('onview');
+    onViewAnswers(true);
   }
 
   return (

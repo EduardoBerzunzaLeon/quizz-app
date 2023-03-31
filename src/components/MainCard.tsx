@@ -3,10 +3,12 @@ import { useState, useEffect } from 'react';
 import GameOverButtons from "./GameOverButtons"
 import Question from "./Question";
 import { Question as QuestionType } from '../assets/questions';
+import Answers from "./Answers";
 
 const MainCard = () => {
 
     const [isFinished, setIsFinished] = useState<boolean>(false);
+    const [showAnswers, setShowAnswers] = useState<boolean>(false);
     const [currentQuestion, setCurrentQuestion] = useState<number>(0);
     const [score, setScore] = useState(0);
     const [questions, setQuestions] = useState<QuestionType[] | []>([])
@@ -19,13 +21,18 @@ const MainCard = () => {
                 </Typography>
                 {
                     isFinished 
-                        ? (<GameOverButtons 
+                        ? showAnswers 
+                            ? (<Answers 
+                                    questions={questions}
+                                    onViewAnswers={setShowAnswers}
+                                 />)
+                            : (<GameOverButtons 
                                 score={score}
-                                questions={questions}
                                 onCurrent={setCurrentQuestion}
                                 onFinished={setIsFinished}
                                 onScore={setScore}
-                          />) 
+                                onViewAnswers={setShowAnswers}
+                            />) 
                         : (<Question 
                                 current={currentQuestion} 
                                 onFinished={setIsFinished}

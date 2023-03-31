@@ -1,6 +1,7 @@
 import { Button, Stack, Typography } from '@mui/material';
 import { FC, MouseEvent, useEffect, useRef, useState } from 'react';
 import { fakeQuestions, Question as QuestionType } from '../assets/questions';
+import { generateQuestions, glossary } from '../assets/glossary';
 
 
 interface Props {
@@ -11,10 +12,6 @@ interface Props {
   onQuestions: React.Dispatch<React.SetStateAction<QuestionType[] | []>>,
 }
 
-const getQuestions= () => {
-  console.log('call questions method');
-  return fakeQuestions;
-};
 
 const Question: FC<Props> = ({ current, onNext, onScore, onFinished, onQuestions }) => {
 
@@ -23,7 +20,7 @@ const Question: FC<Props> = ({ current, onNext, onScore, onFinished, onQuestions
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
 
   useEffect(() => {
-    onQuestions(getQuestions());
+    onQuestions(generateQuestions(glossary, 240, 20, []));
   }, []);
 
   useEffect(() => {
