@@ -57,10 +57,11 @@ export const generateQuestions = (glos: Glossary[], max: number, totalQuestions:
         answers
     }
 
+    question.answers = question.answers.sort(() => Math.random() - 0.5);
+
     questions.push(question);
 
     if(totalQuestions === questions.length) return questions;
-    console.log(questions.length);
 
     return generateQuestions(glos, max - 1, totalQuestions, questions);
 

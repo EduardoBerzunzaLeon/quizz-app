@@ -1,9 +1,10 @@
 import {Card, CardContent, Typography } from "@mui/material"
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import GameOverButtons from "./GameOverButtons"
 import Question from "./Question";
 import { Question as QuestionType } from '../assets/questions';
 import Answers from "./Answers";
+import ConfettiExplosion from "react-confetti-explosion";
 
 const MainCard = () => {
 
@@ -14,7 +15,7 @@ const MainCard = () => {
     const [questions, setQuestions] = useState<QuestionType[] | []>([])
     
     return (
-        <Card sx={{ minWidth: 350, borderRadius: '12px' }} elevation={4}>
+        <Card sx={{ minWidth: 200, borderRadius: '12px', marginLeft: '3px', marginRight: '3px' }} elevation={4}>
             <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
                     Quiz App
@@ -26,14 +27,22 @@ const MainCard = () => {
                                     questions={questions}
                                     onViewAnswers={setShowAnswers}
                                  />)
-                            : (<GameOverButtons 
-                                score={score}
-                                onCurrent={setCurrentQuestion}
-                                onFinished={setIsFinished}
-                                onScore={setScore}
-                                onViewAnswers={setShowAnswers}
-                            />) 
-                        : (<Question 
+                            : (<>
+                                <ConfettiExplosion 
+                                    force={.8}
+                                    duration={3000}
+                                    particleCount={250}
+                                    width={1600}
+                                />
+                                <GameOverButtons 
+                                    score={score}
+                                    onCurrent={setCurrentQuestion}
+                                    onFinished={setIsFinished}
+                                    onScore={setScore}
+                                    onViewAnswers={setShowAnswers}
+                                />
+                            </>) 
+                            : (<Question 
                                 current={currentQuestion} 
                                 onFinished={setIsFinished}
                                 onNext={setCurrentQuestion}

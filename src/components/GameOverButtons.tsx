@@ -36,7 +36,7 @@ const GameOverButtons: FC<Props> = ({ score, onCurrent, onFinished, onScore, onV
           startIcon={<FavoriteIcon />}
           onClick={onReset}
         >
-            Volver a jugar
+            Play
         </Button>
         <Button 
           size="medium" 
@@ -44,7 +44,7 @@ const GameOverButtons: FC<Props> = ({ score, onCurrent, onFinished, onScore, onV
           startIcon={<VisibilityIcon />}
           onClick={onView}
         >
-            Ver respuestas
+            Answers
         </Button>
     </Stack>
   ) 

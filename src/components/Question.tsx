@@ -1,5 +1,6 @@
-import { Button, Stack, Typography } from '@mui/material';
 import { FC, MouseEvent, useEffect, useRef, useState } from 'react';
+
+import { Button, Stack, Typography } from '@mui/material';
 import { fakeQuestions, Question as QuestionType } from '../assets/questions';
 import { generateQuestions, glossary } from '../assets/glossary';
 
@@ -18,16 +19,16 @@ const Question: FC<Props> = ({ current, onNext, onScore, onFinished, onQuestions
   const [isTheLast, setIsTheLast] = useState<boolean>(false);
   const [textClicked, setTextClicked] = useState<string>('');
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
+  const [questions, setQuestions] = useState<QuestionType[]>([]);
 
   useEffect(() => {
-    onQuestions(generateQuestions(glossary, 240, 20, []));
+    setQuestions(generateQuestions([...glossary], 240, 20, []));
   }, []);
 
   useEffect(() => {
-    setIsTheLast((current + 1) === fakeQuestions.length);
-  }, [current, fakeQuestions]);
+    setIsTheLast((current + 1) === questions.length);
+  }, [current, questions]);
 
-  
   const getColor = ( isCorrect: boolean, text: string, answerText: string ) => {
 
     if(text === '') return;
@@ -58,15 +59,18 @@ const Question: FC<Props> = ({ current, onNext, onScore, onFinished, onQuestions
     if(!isTheLast) return onNext(c => c + 1);
 
     onFinished(true);
+    onQuestions(questions);
   }
+
+  if(questions.length <= 0) return <div></div>
 
   return (
     <Stack direction="column" spacing={2}>
       <Typography variant="subtitle1" component="span">
-        What is the meaning of <b>{fakeQuestions[current].question}</b> in spanish?
+        What is the meaning of <b>{questions[current].question}</b> in spanish?
       </Typography>
       {
-        fakeQuestions[current].answers.map(({ text, isCorrect }) => (
+        questions[current].answers.map(({ text, isCorrect }) => (
           <Button 
             key={text} 
             size="medium" 
@@ -85,12 +89,13 @@ const Question: FC<Props> = ({ current, onNext, onScore, onFinished, onQuestions
       spacing={2}
     >
         <Typography variant="subtitle2" component="span">
-          question { current + 1 } of { fakeQuestions.length }
+          question { current + 1 } of { questions.length }
         </Typography>
         <Button 
           size="medium" 
           sx={{ borderRadius: '12px' }} 
           onClick={handleNext}
+          disabled={!isDisabled}
         >
           { isTheLast ? 'Finish Quiz' : 'Up next' }
         </Button>
