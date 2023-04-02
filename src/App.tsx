@@ -1,8 +1,8 @@
+import {Grid} from '@mui/material';
 import {ThemeProvider, createTheme} from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import MainCard from './components/MainCard';
-import {Grid} from '@mui/material';
 
+import MainCard from './components/MainCard';
 
 const darkTheme = createTheme({
     palette: {

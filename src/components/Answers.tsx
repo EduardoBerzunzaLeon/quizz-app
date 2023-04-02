@@ -1,7 +1,7 @@
 import { FC, useMemo, useState } from 'react';
 
 import { Button, Stack, Typography } from '@mui/material';
-import { Answer, Question } from '../assets/questions';
+import { Answer, Question } from '../assets/glossary';
 
 interface Props {
     questions: Question[],

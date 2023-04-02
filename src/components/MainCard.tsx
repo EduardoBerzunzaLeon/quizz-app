@@ -1,10 +1,12 @@
-import {Card, CardContent, Typography } from "@mui/material"
 import { useState } from 'react';
+
+import {Card, CardContent, Typography } from "@mui/material"
+import ConfettiExplosion from "react-confetti-explosion";
+
+import { Question as QuestionType } from '../assets/glossary';
+import Answers from "./Answers";
 import GameOverButtons from "./GameOverButtons"
 import Question from "./Question";
-import { Question as QuestionType } from '../assets/questions';
-import Answers from "./Answers";
-import ConfettiExplosion from "react-confetti-explosion";
 
 const MainCard = () => {
 

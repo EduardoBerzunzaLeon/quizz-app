@@ -1,8 +1,9 @@
-import { FC, MouseEvent, useEffect, useRef, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 import { Button, Stack, Typography } from '@mui/material';
-import { fakeQuestions, Question as QuestionType } from '../assets/questions';
+
 import { generateQuestions, glossary } from '../assets/glossary';
+import { Question as QuestionType } from '../assets/glossary';
 
 
 interface Props {

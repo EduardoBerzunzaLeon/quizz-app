@@ -3,7 +3,6 @@ import { FC } from "react";
 import { Stack, Button, Typography } from "@mui/material"
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import { Question } from "../assets/questions";
 
 interface Props {
   score: number,
