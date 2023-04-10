@@ -1,52 +1,44 @@
-import { FC, useEffect, useState } from 'react';
+import { 
+  Dispatch, 
+  FC, 
+  SetStateAction,
+  useEffect, 
+  useState, 
+} from 'react';
 
 import { Button, Stack, Typography } from '@mui/material';
 
-import { generateQuestions, glossary } from '../assets/glossary';
-import { Question as QuestionType } from '../assets/glossary';
-
+import { 
+  generateQuestions, 
+  getColor, 
+  Glossary,
+  Question as QuestionType,
+} from '../assets/';
 
 interface Props {
-  current: number,
-  onNext: React.Dispatch<React.SetStateAction<number>>,
-  onScore: React.Dispatch<React.SetStateAction<number>>,
-  onFinished: React.Dispatch<React.SetStateAction<boolean>>,
-  onQuestions: React.Dispatch<React.SetStateAction<QuestionType[] | []>>,
+  glossary: Glossary[],
+  onScore: Dispatch<SetStateAction<number>>,
+  onFinished: Dispatch<SetStateAction<boolean>>,
+  onQuestions: Dispatch<SetStateAction<QuestionType[] | []>>,
 }
 
+const Question: FC<Props> = ({  glossary, onScore, onFinished, onQuestions }) => {
 
-const Question: FC<Props> = ({ current, onNext, onScore, onFinished, onQuestions }) => {
-
+  const [isDisabled, setIsDisabled] = useState<boolean>(true);
   const [isTheLast, setIsTheLast] = useState<boolean>(false);
+  const [currentQuestion, setCurrentQuestion] = useState<number>(0);
   const [textClicked, setTextClicked] = useState<string>('');
-  const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const [questions, setQuestions] = useState<QuestionType[]>([]);
 
   useEffect(() => {
-    setQuestions(generateQuestions([...glossary], 240, 20, []));
+    setQuestions(generateQuestions(glossary, 240, 20, []));
   }, []);
+  
+  const handleClick = (isCorrect: boolean, text: string): void => {
+    
+    if(!isDisabled) return;
 
-  useEffect(() => {
-    setIsTheLast((current + 1) === questions.length);
-  }, [current, questions]);
-
-  const getColor = ( isCorrect: boolean, text: string, answerText: string ) => {
-
-    if(text === '') return;
-
-    if(isCorrect) return 'success';
-
-    if(text === answerText ) return 'error';
-
-    return;
-
-  }
-
-  const handleClick = (isCorrect: boolean, text: string) => {
-    setIsDisabled(true);
-
-    if(isDisabled) return;
-     
+    setIsDisabled(false);
     setTextClicked(text);
     
     if(isCorrect) onScore(score => score + 1);
@@ -55,23 +47,28 @@ const Question: FC<Props> = ({ current, onNext, onScore, onFinished, onQuestions
   const handleNext = () => {
 
     setTextClicked('');
-    setIsDisabled(false);
+    setIsDisabled(true);
 
-    if(!isTheLast) return onNext(c => c + 1);
+    if((currentQuestion + 2) === questions.length) setIsTheLast(true);
 
-    onFinished(true);
-    onQuestions(questions);
+    if(isTheLast) {
+      onFinished(true);
+      setCurrentQuestion(0);
+      onQuestions(questions);
+    }
+    
+    setCurrentQuestion(c => c + 1);
   }
 
-  if(questions.length <= 0) return <div></div>
+  if(questions.length <= 0) return <></>
 
   return (
     <Stack direction="column" spacing={2}>
       <Typography variant="subtitle1" component="span">
-        What is the meaning of <b>{questions[current].question}</b> in spanish?
+        What is the meaning of <b>{questions[currentQuestion].question}</b> in spanish?
       </Typography>
       {
-        questions[current].answers.map(({ text, isCorrect }) => (
+        questions[currentQuestion].answers.map(({ text, isCorrect }) => (
           <Button 
             key={text} 
             size="medium" 
@@ -90,13 +87,13 @@ const Question: FC<Props> = ({ current, onNext, onScore, onFinished, onQuestions
       spacing={2}
     >
         <Typography variant="subtitle2" component="span">
-          question { current + 1 } of { questions.length }
+          question { currentQuestion + 1 } of { questions.length }
         </Typography>
         <Button 
           size="medium" 
           sx={{ borderRadius: '12px' }} 
           onClick={handleNext}
-          disabled={!isDisabled}
+          disabled={isDisabled}
         >
           { isTheLast ? 'Finish Quiz' : 'Up next' }
         </Button>

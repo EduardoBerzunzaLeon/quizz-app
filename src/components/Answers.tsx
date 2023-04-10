@@ -1,21 +1,17 @@
-import { FC, useMemo, useState } from 'react';
+import { FC, Dispatch, SetStateAction, useMemo, useState } from 'react';
 
 import { Button, Stack, Typography } from '@mui/material';
-import { Answer, Question } from '../assets/glossary';
+
+import { Question, getCorrectAnswer } from '../assets';
 
 interface Props {
     questions: Question[],
-    onViewAnswers: React.Dispatch<React.SetStateAction<boolean>>,
-}
-
-const getCorrectAnswer = (answers: Answer[]): string => {
-    const correctAnswer = answers.find(({ isCorrect }) => isCorrect )?.text || '';
-    return correctAnswer;
+    onViewAnswers: Dispatch<SetStateAction<boolean>>,
 }
 
 const Answers: FC<Props> = ({ questions, onViewAnswers }) => {
 
-    const [current, setCurrent] = useState(0);
+    const [current, setCurrent] = useState<number>(0);
 
     const correctAnswer = useMemo(
         () => getCorrectAnswer(questions[current].answers), 

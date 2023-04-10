@@ -1,12 +1,12 @@
  
- interface Glossary {
+ export interface Glossary {
     english: string;
     spanish: string;
     definition: string;
  }
  
 
- export interface Answer {
+export interface Answer {
     text: string,
     isCorrect: boolean
 }
@@ -30,10 +30,11 @@ const getRandomInt = (max: number, notEqual?: number[]): number => {
 export const generateQuestions = (glos: Glossary[], max: number, totalQuestions: number, questions: Question[]): Question[] => {
 
     const randomInt: number = getRandomInt(max);
+    const data = questions.length === 0 ? [...glos] : glos;
 
-    const correctAnswer = glos[randomInt];
+    const correctAnswer = data[randomInt];
 
-    glos.splice(randomInt, 1);
+    data.splice(randomInt, 1);
 
     const answers: Answer[] = [ {
         text: correctAnswer.spanish,
@@ -44,7 +45,7 @@ export const generateQuestions = (glos: Glossary[], max: number, totalQuestions:
 
     for (let index = 0; index < 3; index++) {
         const newRandomInt = getRandomInt(max - (index + 1), positions);
-        const incorrectAnswer = glos[newRandomInt];
+        const incorrectAnswer = data[newRandomInt];
         positions.push(newRandomInt);
         answers.push({
             text: incorrectAnswer.spanish,
@@ -63,9 +64,11 @@ export const generateQuestions = (glos: Glossary[], max: number, totalQuestions:
 
     if(totalQuestions === questions.length) return questions;
 
-    return generateQuestions(glos, max - 1, totalQuestions, questions);
+    return generateQuestions(data, max - 1, totalQuestions, questions);
 
 }
+
+export const getCorrectAnswer = (answers: Answer[]): string => answers.find(({ isCorrect }) => isCorrect )?.text || '';
  
  export const glossary: Glossary[] = [
         {

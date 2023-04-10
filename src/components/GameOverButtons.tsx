@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, Dispatch, SetStateAction } from "react";
 
 import { Stack, Button, Typography } from "@mui/material"
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -6,16 +6,14 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 
 interface Props {
   score: number,
-  onScore: React.Dispatch<React.SetStateAction<number>>,
-  onFinished: React.Dispatch<React.SetStateAction<boolean>>,
-  onCurrent: React.Dispatch<React.SetStateAction<number>>,
-  onViewAnswers: React.Dispatch<React.SetStateAction<boolean>>,
+  onScore: Dispatch<SetStateAction<number>>,
+  onFinished: Dispatch<SetStateAction<boolean>>,
+  onViewAnswers: Dispatch<SetStateAction<boolean>>,
 }
 
-const GameOverButtons: FC<Props> = ({ score, onCurrent, onFinished, onScore, onViewAnswers }) => {
+const GameOverButtons: FC<Props> = ({ score, onFinished, onScore, onViewAnswers }) => {
 
   const onReset = () => {
-    onCurrent(0);
     onFinished(false);
     onScore(0);
   }
