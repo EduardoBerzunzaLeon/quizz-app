@@ -11,6 +11,7 @@
     "build": "tsc && vite build --base=/quizz-app/",
     "preview": "vite preview",
     "test": "jest",
+    "test:coverage": "jest --coverage",
     "check-types": "tsc"
   },
   "dependencies": {
