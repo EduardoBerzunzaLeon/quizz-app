@@ -16,7 +16,7 @@ export interface Question {
     answers: Answer[]
 }
 
-const getRandomInt = (max: number, notEqual?: number[]): number => { 
+export const getRandomInt = (max: number, notEqual?: number[]): number => { 
 
     if(!notEqual) return Math.floor(Math.random() * max);
 
