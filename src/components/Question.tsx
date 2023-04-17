@@ -76,6 +76,7 @@ const Question: FC<Props> = ({  glossary, onScore, onFinished, onQuestions }) =>
             sx={{ borderRadius: '12px' }} 
             onClick={() => handleClick(isCorrect, text)}
             color={getColor(isCorrect, textClicked, text)}
+            data-testid='answerButton'
           >{ text }</Button>
         ))
       }

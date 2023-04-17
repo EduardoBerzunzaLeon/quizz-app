@@ -18,7 +18,7 @@ const MainCard = () => {
     return (
         <Card sx={{ minWidth: 200, borderRadius: '12px', marginLeft: '3px', marginRight: '3px' }} elevation={4}>
             <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
+                <Typography gutterBottom variant="h5" component="h5">
                     Quiz App
                 </Typography>
                 {
@@ -29,12 +29,12 @@ const MainCard = () => {
                                     onViewAnswers={setShowAnswers}
                                  />)
                             : (<>
-                                <ConfettiExplosion 
+                                {/* <ConfettiExplosion 
                                     force={.8}
                                     duration={3000}
                                     particleCount={250}
                                     width={1600}
-                                />
+                                /> */}
                                 <GameOverButtons 
                                     score={score}
                                     onFinished={setIsFinished}

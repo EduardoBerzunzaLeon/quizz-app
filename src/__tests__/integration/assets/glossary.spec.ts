@@ -5,7 +5,7 @@ import {
     glossary 
 } from "../../../assets";
 
-describe.only('Glossary Test', () => {
+describe('Glossary Test', () => {
 
     it('Should return a number less or equal than the maximun',() => {
         const max =  10;
