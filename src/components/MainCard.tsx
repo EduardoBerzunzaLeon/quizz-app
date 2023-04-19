@@ -8,7 +8,7 @@ import Answers from "./Answers";
 import GameOverButtons from "./GameOverButtons"
 import Question from "./Question";
 
-const MainCard = () => {
+export const MainCard = () => {
 
     const [isFinished, setIsFinished] = useState<boolean>(false);
     const [showAnswers, setShowAnswers] = useState<boolean>(false);
@@ -18,7 +18,7 @@ const MainCard = () => {
     return (
         <Card sx={{ minWidth: 200, borderRadius: '12px', marginLeft: '3px', marginRight: '3px' }} elevation={4}>
             <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
+                <Typography gutterBottom variant="h5" component="h5">
                     Quiz App
                 </Typography>
                 {
