@@ -8,7 +8,7 @@ import Answers from "./Answers";
 import GameOverButtons from "./GameOverButtons"
 import Question from "./Question";
 
-const MainCard = () => {
+export const MainCard = () => {
 
     const [isFinished, setIsFinished] = useState<boolean>(false);
     const [showAnswers, setShowAnswers] = useState<boolean>(false);
@@ -29,12 +29,12 @@ const MainCard = () => {
                                     onViewAnswers={setShowAnswers}
                                  />)
                             : (<>
-                                {/* <ConfettiExplosion 
+                                <ConfettiExplosion 
                                     force={.8}
                                     duration={3000}
                                     particleCount={250}
                                     width={1600}
-                                /> */}
+                                />
                                 <GameOverButtons 
                                     score={score}
                                     onFinished={setIsFinished}

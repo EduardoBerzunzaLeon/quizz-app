@@ -1,16 +1,17 @@
-import {render, screen, fireEvent, waitFor, waitForElementToBeRemoved} from '@testing-library/react'
-import MainCard from '../../../components/MainCard'
+
+import { render, screen, fireEvent } from '@testing-library/react';
+import { MainCard } from '../../../components/MainCard';
+import * as assets from '../../../assets';
+
 
 describe('MainCard Tests', () => { 
 
     test('Loads and display question grid', async () => { 
 
+        const spyGetColor = jest.spyOn(assets, 'getColor');
         render(<MainCard />);
 
-        // await screen.findAllByText('Quiz App');
-
         expect(screen.getByText('Quiz App')).toBeInTheDocument();
-        // const buttons = container.getElementsByClassName('MuiButton-outlined');
         const buttons = screen.getAllByTestId('answerButton');
         const counterSpan = screen.getByText(/question/i);
         const [nextButton] = screen.getAllByText(/UP NEXT/i);
@@ -20,10 +21,19 @@ describe('MainCard Tests', () => {
         expect(counterSpan.textContent).toBe('question 1 of 20');
         expect(nextButton.hasAttribute('disabled')).toBe(true);
         
-        const firstButton = buttons[0];
+        const [firstButton, secondButton] = buttons;
         
         fireEvent.click(firstButton); 
+
+        const { calls } = spyGetColor.mock;
+        const getColorValues = calls.slice(4,8);
+        
+        expect(getColorValues[0][1]).toEqual(firstButton.textContent);
         expect(nextButton.hasAttribute('disabled')).toBe(false);
+        
+        fireEvent.click(secondButton); 
+        expect(calls.length).toEqual(spyGetColor.mock.calls.length);
+        
         fireEvent.click(nextButton);
         expect(nextButton.hasAttribute('disabled')).toBe(true);
         expect(counterSpan.textContent).toBe('question 2 of 20');
@@ -44,21 +54,39 @@ describe('MainCard Tests', () => {
         expect(counterSpan.textContent).toBe('question 20 of 20');
         expect(finishButton).toBeInTheDocument();
         
-        
         if(finishButton) {
             fireEvent.click(finishButton);
         }
-        expect(screen.getByTestId('answerButton')).toBeFalsy();
-        // expect(buttons).not.toBeInTheDocument();
-        // fireEvent.click(nextButton);
+        expect(screen.queryAllByTestId('answerButton').length).toBe(0);
 
-
-
-
+        let gameOverButtons = screen.getAllByRole('button');
         
+        expect(gameOverButtons.length).toBe(2);
+
+        const [ , answersButton ] = gameOverButtons;
+
+        fireEvent.click(answersButton);
+
+        const upNextAnswer = screen.getByRole('button');
+        expect(screen.getByText(/What is the meaning of/i)).toBeInTheDocument();
+        expect(upNextAnswer).toBeInTheDocument();
+
+        for (let index = 0; index < 20; index++) {
+            if(index === 19) {
+                expect(upNextAnswer.textContent?.toLowerCase()).toBe('home');
+            }
+            fireEvent.click(upNextAnswer);   
+        }
 
 
+        gameOverButtons = screen.getAllByRole('button');
 
+        expect(gameOverButtons.length).toBe(2);
+
+        const [ playButton ] = gameOverButtons;
+
+        fireEvent.click(playButton);
+        expect(screen.getAllByTestId('answerButton').length).toBe(4);
     })
 
  })
